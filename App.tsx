@@ -1,5 +1,5 @@
 import React from "react";
-import { StyleSheet, View } from "react-native";
+import { StyleSheet, View, ScrollView } from "react-native";
 import { NavigationContainer } from "@react-navigation/native";
 import { createStackNavigator } from "@react-navigation/stack";
 import { StackScreenProps } from "@react-navigation/stack";
@@ -145,10 +145,10 @@ function Presentation({ navigation }: PresentationProps) {
     <View style={styles.container}>
       <View style={{ padding: 32 }}>
         <Title>Bem vindo!</Title>
-        <Text>Pressione começar para iniciar o questionário.</Text>
+        <Text>Pressione "Começar" para iniciar o questionário.</Text>
         <Text>
-          Selecione as respostas e pressione "Continuar" e na última questão
-          pressionar "Processar perfil" para obter a recomendação.{" "}
+          Selecione a resposta e pressione "Continuar" para confirmar. Na última
+          questão pressionar "Processar perfil" para obter a recomendação.{" "}
         </Text>
         <Text>
           Os botões de respostas precisam de melhorias para aumentar a área de
@@ -288,7 +288,9 @@ function ResultScreen({ navigation }: ResultScreenProps) {
   }));
 
   return (
-    <View style={{ padding: 32, backgroundColor: "white", flex: 1 }}>
+    <ScrollView
+      style={{ paddingLeft: 32, paddingRight: 32, backgroundColor: "white" }}
+    >
       <Title>Resultado</Title>
       <Paragraph>
         Você esta em busca de um {DEVICE_ANSWERS[device]} a ser usado{" "}
@@ -302,7 +304,7 @@ function ResultScreen({ navigation }: ResultScreenProps) {
         Obs: Os valores abaixo estão atualmente mockados. Os links são
         dinâmicos, mas não refletem uma recomendação real.
       </Paragraph>
-      <Spacer height={32} />
+      <Spacer height={24} />
       <Card elevation={4}>
         <Card.Title title="Especificações" />
         <Card.Content>
@@ -343,7 +345,7 @@ function ResultScreen({ navigation }: ResultScreenProps) {
       </Card>
       <Spacer height={32} />
       <Button onPress={() => navigation.popToTop()}>Recomeçar</Button>
-    </View>
+    </ScrollView>
   );
 }
 
