@@ -13,7 +13,6 @@ import {
   Card,
   Paragraph,
   DataTable,
-  Surface,
 } from "react-native-paper";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
@@ -29,8 +28,8 @@ type SurveyState = {
 };
 
 const { persist, purge } = configurePersist({
-  storage: AsyncStorage, // use `AsyncStorage` in react native
-  rootKey: "root", // optional, default value is `root`
+  storage: AsyncStorage,
+  rootKey: "root",
 });
 
 const surveyStore = create<SurveyState>(
@@ -144,18 +143,28 @@ function Presentation({ navigation }: PresentationProps) {
 
   return (
     <View style={styles.container}>
-      <Title>Bem vindo!</Title>
-      <Text>Lorem ipsum dolor sit am </Text>
-      <Spacer height={16} />
-      <Button
-        mode="contained"
-        onPress={() => {
-          clearStore();
-          navigation.navigate("DeviceScreen");
-        }}
-      >
-        Começar
-      </Button>
+      <View style={{ padding: 32 }}>
+        <Title>Bem vindo!</Title>
+        <Text>Pressione começar para iniciar o questionário.</Text>
+        <Text>
+          Selecione as respostas e pressione "Continuar" e na última questão
+          pressionar "Processar perfil" para obter a recomendação.{" "}
+        </Text>
+        <Text>
+          Os botões de respostas precisam de melhorias para aumentar a área de
+          toque. Portanto, pressione sempre na região do botão ou do texto.
+        </Text>
+        <Spacer height={16} />
+        <Button
+          mode="contained"
+          onPress={() => {
+            clearStore();
+            navigation.navigate("DeviceScreen");
+          }}
+        >
+          Começar
+        </Button>
+      </View>
     </View>
   );
 }
@@ -176,11 +185,11 @@ function DeviceScreen({ navigation }: DeviceScreenProps) {
         <RadioButton.Group onValueChange={setDevice} value={device}>
           <RadioWrapper>
             <RadioButton value="pc" />
-            <Text>PC</Text>
+            <Text onPress={() => setDevice("pc")}>PC</Text>
           </RadioWrapper>
           <RadioWrapper>
             <RadioButton value="laptop" />
-            <Text>Laptop</Text>
+            <Text onPress={() => setDevice("laptop")}>Laptop</Text>
           </RadioWrapper>
         </RadioButton.Group>
         <Spacer height={16} />
@@ -212,24 +221,33 @@ function UsageScreen({ navigation }: UsageScreenProps) {
         <RadioButton.Group value={usage} onValueChange={setUsage}>
           <RadioWrapper>
             <RadioButton value="video-editor"></RadioButton>
-            <Text>Edição de video</Text>
+            <Text onPress={() => setUsage("video-editor")}>
+              Edição de video
+            </Text>
           </RadioWrapper>
           <RadioWrapper>
             <RadioButton value="software-development"></RadioButton>
-            <Text>Desenvolvimento de software</Text>
+            <Text onPress={() => setUsage("software-development")}>
+              Desenvolvimento de software
+            </Text>
           </RadioWrapper>
           <RadioWrapper>
             <RadioButton value="office-tools"></RadioButton>
-            <Text>Ferramentas de escritório e pacote office</Text>
+            <Text onPress={() => setUsage("office-tools")}>
+              Ferramentas de escritório e pacote office
+            </Text>
           </RadioWrapper>
           <RadioWrapper>
             <RadioButton value="internet"></RadioButton>
-            <Text>Navegar na internet e redes sociais</Text>
+            <Text onPress={() => setUsage("internet")}>
+              Navegar na internet e redes sociais
+            </Text>
           </RadioWrapper>
         </RadioButton.Group>
         <Spacer height={16} />
         <Button
           mode="contained"
+          disabled={usage === ""}
           onPress={() => navigation.navigate("LoadingScreen")}
         >
           Processar perfil
@@ -319,7 +337,7 @@ function ResultScreen({ navigation }: ResultScreenProps) {
             >
               Buscar no Google
             </Button>
-            <Button>Buscar na Amazon</Button>
+            <Button disabled>Buscar na Amazon</Button>
           </View>
         </Card.Actions>
       </Card>
