@@ -17,6 +17,7 @@ import {
 import AsyncStorage from "@react-native-async-storage/async-storage";
 
 import create from "zustand";
+import shallow from "zustand/shallow";
 import { configurePersist } from "zustand-persist";
 import * as WebBrowser from "expo-web-browser";
 
@@ -35,7 +36,7 @@ const { persist, purge } = configurePersist({
 const surveyStore = create<SurveyState>(
   persist(
     {
-      key: "survey", // required, child key of storage
+      key: "survey",
     },
     (set) => ({
       device: "",
@@ -172,10 +173,13 @@ function Presentation({ navigation }: PresentationProps) {
 type DeviceScreenProps = StackScreenProps<StackParamList, "DeviceScreen">;
 
 function DeviceScreen({ navigation }: DeviceScreenProps) {
-  const { device, setDevice } = surveyStore((state) => ({
-    device: state.device,
-    setDevice: state.setSurvey("device"),
-  }));
+  const { device, setDevice } = surveyStore(
+    (state) => ({
+      device: state.device,
+      setDevice: state.setSurvey("device"),
+    }),
+    shallow
+  );
 
   return (
     <View style={styles.container}>
@@ -208,10 +212,13 @@ function DeviceScreen({ navigation }: DeviceScreenProps) {
 type UsageScreenProps = StackScreenProps<StackParamList, "UsageScreen">;
 
 function UsageScreen({ navigation }: UsageScreenProps) {
-  const { usage, setUsage } = surveyStore((state) => ({
-    usage: state.usage,
-    setUsage: state.setSurvey("usage"),
-  }));
+  const { usage, setUsage } = surveyStore(
+    (state) => ({
+      usage: state.usage,
+      setUsage: state.setSurvey("usage"),
+    }),
+    shallow
+  );
 
   return (
     <View style={styles.container}>
@@ -282,10 +289,13 @@ function LoadingScreen({ navigation }: LoadingScreenProps) {
 type ResultScreenProps = StackScreenProps<StackParamList, "ResultScreen">;
 
 function ResultScreen({ navigation }: ResultScreenProps) {
-  const { device, usage } = surveyStore((state) => ({
-    device: state.device,
-    usage: state.usage,
-  }));
+  const { device, usage } = surveyStore(
+    (state) => ({
+      device: state.device,
+      usage: state.usage,
+    }),
+    shallow
+  );
 
   return (
     <ScrollView
@@ -302,7 +312,7 @@ function ResultScreen({ navigation }: ResultScreenProps) {
       </Paragraph>
       <Paragraph>
         Obs: Os valores abaixo estão atualmente mockados. Os links são
-        dinâmicos, mas não refletem uma recomendação real.
+        dinâmicos, mas não refletem uma busca real.
       </Paragraph>
       <Spacer height={24} />
       <Card elevation={4}>
