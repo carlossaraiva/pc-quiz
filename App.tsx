@@ -145,7 +145,7 @@ function Presentation({ navigation }: PresentationProps) {
   return (
     <View style={styles.container}>
       <View style={{ padding: 32 }}>
-        <Title>Bem vindo!</Title>
+        <Title>Bem vindo!!!</Title>
         <Text>Pressione "Começar" para iniciar o questionário.</Text>
         <Text>
           Selecione a resposta e pressione "Continuar" para confirmar. Na última

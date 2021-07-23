@@ -29,6 +29,7 @@
       "favicon": "./assets/favicon.png"
     },
     "description": "",
-    "githubUrl": "https://github.com/CarlosSaraiva/pc-recommendation"
+    "githubUrl": "https://github.com/CarlosSaraiva/pc-recommendation",
+    "sdkVersion": "41.0.0"
   }
 }
