@@ -325,8 +325,6 @@ function ResultScreen({ navigation, route }: ResultScreenProps) {
   return (
     <View
       style={{
-        paddingLeft: 32,
-        paddingRight: 32,
         backgroundColor: "white",
         flex: 1,
       }}
