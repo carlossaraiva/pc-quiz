@@ -288,7 +288,7 @@ function LoadingScreen({ navigation }: LoadingScreenProps) {
   });
 
   useEffect(() => {
-    navigation.replace("ResultScreen", { result: data });
+    if (isSuccess) navigation.replace("ResultScreen", { result: data });
   }, [isSuccess]);
 
   return (
@@ -307,7 +307,6 @@ function ResultScreen({ navigation, route }: ResultScreenProps) {
   const result = route.params.result;
 
   const renderItem = ({ item }) => {
-    console.log(item);
     return (
       <Card>
         <Card.Content>
