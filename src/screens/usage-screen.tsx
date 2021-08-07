@@ -1,9 +1,9 @@
 import { StackScreenProps } from "@react-navigation/stack";
+import { StackParamList } from "@types";
 import React from "react";
 import { View } from "react-native";
 import { Button, RadioButton, Title, Text } from "react-native-paper";
 import shallow from "zustand/shallow";
-import { StackParamList } from "../../App";
 import { RadioWrapper } from "../components/radio";
 import { Spacer } from "../components/spacer";
 import { surveyStore } from "../store";
@@ -13,19 +13,22 @@ type UsageScreenProps = StackScreenProps<StackParamList, "UsageScreen">;
 
 function UsageScreen({ navigation }: UsageScreenProps) {
   const { usage, setUsage } = surveyStore(
-    (state) => ({
-      usage: state.usage,
-      setUsage: state.setSurvey("usage"),
+    ({ usage, setSurvey }) => ({
+      usage,
+      setUsage: setSurvey("usage"),
     }),
     shallow
   );
+
+  const defaultOrUsageValue = usage ?? "";
+  const usageIsEmpty = usage === "";
 
   return (
     <View style={styles.container}>
       <View>
         <Title style={{ marginLeft: 8 }}>Eu vou usar o PC para:</Title>
         <Spacer height={16} />
-        <RadioButton.Group value={usage} onValueChange={setUsage}>
+        <RadioButton.Group value={defaultOrUsageValue} onValueChange={setUsage}>
           <RadioWrapper>
             <RadioButton value="video-editor"></RadioButton>
             <Text onPress={() => setUsage("video-editor")}>
@@ -54,7 +57,7 @@ function UsageScreen({ navigation }: UsageScreenProps) {
         <Spacer height={16} />
         <Button
           mode="contained"
-          disabled={usage === ""}
+          disabled={usageIsEmpty}
           onPress={() => navigation.navigate("LoadingScreen")}
         >
           Processar perfil

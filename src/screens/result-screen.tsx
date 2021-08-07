@@ -1,8 +1,8 @@
 import { StackScreenProps } from "@react-navigation/stack";
+import { StackParamList } from "@types";
 import React from "react";
 import { View, FlatList } from "react-native";
 import { Button, Card, Paragraph, Title } from "react-native-paper";
-import { StackParamList } from "../../App";
 
 type ResultScreenProps = StackScreenProps<StackParamList, "ResultScreen">;
 

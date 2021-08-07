@@ -1,19 +1,30 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React from "react";
+import React, { useEffect } from "react";
 import { View } from "react-native";
 import { Title, Text, Button } from "react-native-paper";
-import { StackParamList } from "../../App";
-import { Spacer } from "../components/spacer";
-import { surveyStore } from "../store";
-import { styles } from "../styles";
+import { AdMobBanner, PublisherBanner, AdMobRewarded } from "expo-ads-admob";
+import { AD_REWARDED, AD_BANNER, AD_PUBLISHER } from "@env";
+import { StackParamList } from "@types";
+import { Spacer } from "@component";
+import { surveyStore } from "@store";
+import { styles } from "@styles";
 
 type PresentationProps = StackScreenProps<StackParamList, "Presentation">;
 
 function PresentationScreen({ navigation }: PresentationProps) {
   const clearStore = surveyStore((state) => state.clear);
 
+  useEffect(() => {
+    AdMobRewarded.setAdUnitID(AD_REWARDED)
+      .then(() => AdMobRewarded.requestAdAsync({ servePersonalizedAds: true }))
+      .then(AdMobRewarded.showAdAsync);
+  }, []);
+
   return (
     <View style={styles.container}>
+      <AdMobBanner bannerSize="largeBanner" adUnitID={AD_BANNER} />
+      <View style={{ height: 40 }} />
+      <PublisherBanner bannerSize="banner" adUnitID={AD_PUBLISHER} />
       <View style={{ padding: 32 }}>
         <Title>Bem vindo!!!</Title>
         <Text>Pressione "Começar" para iniciar o questionário.</Text>

@@ -1,44 +1,62 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React, { useEffect } from "react";
 import { View, ActivityIndicator } from "react-native";
-import { Text } from "react-native-paper";
+import { Dialog, Paragraph, Portal, Text, Button } from "react-native-paper";
 import { useQuery } from "react-query";
 import shallow from "zustand/shallow";
-import { StackParamList } from "../../App";
-import { Spacer } from "../components/spacer";
-import { RESPONSES, surveyStore } from "../store";
-import { styles } from "../styles";
+import { API_BASE_URL, API_ENDPOINT_BASE } from "@env";
+import { StackParamList } from "@types";
+import { Spacer } from "@component";
+import { surveyStore } from "@store";
+import { styles } from "@styles";
 
 type LoadingScreenProps = StackScreenProps<StackParamList, "ResultScreen">;
 
 function LoadingScreen({ navigation }: LoadingScreenProps) {
-  const { usage, device } = surveyStore(
-    (state) => ({
-      usage: state.usage,
-      device: state.device,
-      setUsage: state.setSurvey("usage"),
+  const [visible, setVisible] = React.useState(false);
+  const { result } = surveyStore(
+    ({ getResult }) => ({
+      result: getResult(),
     }),
     shallow
   );
 
-  const query = RESPONSES[device][usage].query;
+  const showDialog = () => setVisible(true);
 
-  const { data, isSuccess } = useQuery(["results", query], () => {
-    return fetch(
-      `https://cors-anywhere.herokuapp.com/https://afternoon-bayou-13013.herokuapp.com/test?${new URLSearchParams(
-        {
-          q: query,
-        }
-      )}`
-    ).then((res) => res.json());
-  });
+  const hideDialog = () => setVisible(false);
+
+  const { data, isSuccess, isError, error } = useQuery(
+    ["results", result?.query],
+    () => {
+      if (!result) throw new Error("Query parameter is null or empty");
+
+      return fetch(
+        `${API_BASE_URL}/${API_ENDPOINT_BASE}?${new URLSearchParams({
+          q: result.query,
+        })}`
+      ).then((res) => res.json());
+    }
+  );
 
   useEffect(() => {
     if (isSuccess) navigation.replace("ResultScreen", { result: data });
   }, [isSuccess]);
 
+  console.log(error);
+
   return (
     <View style={styles.container}>
+      <Portal>
+        <Dialog visible={visible} onDismiss={hideDialog}>
+          <Dialog.Title>Alert</Dialog.Title>
+          <Dialog.Content>
+            <Paragraph>{"error"}</Paragraph>
+          </Dialog.Content>
+          <Dialog.Actions>
+            <Button onPress={hideDialog}>Done</Button>
+          </Dialog.Actions>
+        </Dialog>
+      </Portal>
       <ActivityIndicator size={128} />
       <Spacer height={32} />
       <Text>Processando seu perfil.</Text>
