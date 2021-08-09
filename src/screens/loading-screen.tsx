@@ -1,7 +1,14 @@
 import { StackScreenProps } from "@react-navigation/stack";
 import React, { useEffect } from "react";
-import { View, ActivityIndicator } from "react-native";
-import { Dialog, Paragraph, Portal, Text, Button } from "react-native-paper";
+import { View } from "react-native";
+import {
+  Dialog,
+  Paragraph,
+  Portal,
+  Text,
+  Button,
+  ActivityIndicator,
+} from "react-native-paper";
 import { useQuery } from "react-query";
 import shallow from "zustand/shallow";
 import { API_BASE_URL, API_ENDPOINT_BASE } from "@env";
@@ -41,8 +48,6 @@ function LoadingScreen({ navigation }: LoadingScreenProps) {
   useEffect(() => {
     if (isSuccess) navigation.replace("ResultScreen", { result: data });
   }, [isSuccess]);
-
-  console.log(error);
 
   return (
     <View style={styles.container}>

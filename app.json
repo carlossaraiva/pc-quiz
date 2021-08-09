@@ -2,13 +2,13 @@
   "expo": {
     "name": "Meu novo computador",
     "slug": "pc-quiz",
-    "version": "1.0.0",
+    "version": "0.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#F90040"
     },
     "updates": {
       "fallbackToCacheTimeout": 0
@@ -18,17 +18,25 @@
       "supportsTablet": true
     },
     "android": {
+      "googleServicesFile": "./config/google-services.json",
       "config": {
         "googleMobileAdsAppId": "ca-app-pub-8848253950029861~8017240873"
       },
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#FFFFFF"
-      }
+      },
+      "package": "com.nirgendwo.pcquiz"
     },
     "web": {
       "favicon": "./assets/favicon.png"
     },
+    "plugins": [
+      "@react-native-firebase/app",
+      "@react-native-firebase/crashlytics",
+      "@react-native-firebase/perf"
+    ],
+
     "description": "",
     "githubUrl": "https://github.com/CarlosSaraiva/pc-recommendation"
   }

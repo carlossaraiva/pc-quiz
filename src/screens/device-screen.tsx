@@ -1,14 +1,54 @@
-import { Spacer, RadioWrapper } from "@component";
+import { Spacer, RadioWrapper, LogoSmall } from "@component";
 import { StackScreenProps } from "@react-navigation/stack";
 import { surveyStore } from "@store";
-import { styles } from "@styles";
 import { StackParamList } from "@types";
 import React from "react";
-import { View } from "react-native";
-import { Button, RadioButton, Title, Text } from "react-native-paper";
+import { StyleSheet, View } from "react-native";
+import {
+  Button,
+  RadioButton,
+  Title,
+  Text,
+  useTheme,
+  Paragraph,
+} from "react-native-paper";
 import shallow from "zustand/shallow";
+import { AntDesign } from "@expo/vector-icons";
 
 type DeviceScreenProps = StackScreenProps<StackParamList, "DeviceScreen">;
+
+function CustomOption({ title, description, value, isActive, onTouch }) {
+  const { colors, roundness } = useTheme();
+  const currentActiveColor = isActive ? colors.primary : colors.disabled;
+  const currentTextColor = isActive ? colors.text : colors.disabled;
+
+  return (
+    <View
+      onTouchStart={onTouch}
+      style={{
+        flexDirection: "row",
+        alignItems: "center",
+        borderColor: currentActiveColor,
+        borderWidth: 1,
+        borderRadius: roundness,
+        padding: 8,
+      }}
+    >
+      <View style={{ flex: 0.2 }}>
+        <AntDesign name="poweroff" size={32} color={currentActiveColor} />
+      </View>
+      <View style={{ flex: 1 }}>
+        <Title>{title}</Title>
+        <Paragraph style={{ color: currentTextColor }}>
+          Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
+          tempore perferendis saepe autem distinctio error, nesciunt nemo! Quia,
+          omnis voluptas quae ipsam, nobis sapiente earum ex, repellat quaerat
+          quidem illo!
+        </Paragraph>
+      </View>
+    </View>
+  );
+}
 
 function DeviceScreen({ navigation: { navigate } }: DeviceScreenProps) {
   const { device, setDevice } = surveyStore(
@@ -18,6 +58,7 @@ function DeviceScreen({ navigation: { navigate } }: DeviceScreenProps) {
     }),
     shallow
   );
+  const { colors, roundness } = useTheme();
 
   const defaultOrDeviceValue = device ?? "";
   const deviceIsEmpty = device === "";
@@ -25,21 +66,27 @@ function DeviceScreen({ navigation: { navigate } }: DeviceScreenProps) {
   return (
     <View style={styles.container}>
       <View>
-        <Title style={{ marginLeft: 8 }}>Eu estou precisando de um:</Title>
         <Spacer height={16} />
-        <RadioButton.Group
-          onValueChange={setDevice}
-          value={defaultOrDeviceValue}
+        <View
+          style={{ borderRadius: roundness, backgroundColor: colors.primary }}
         >
-          <RadioWrapper>
-            <RadioButton value="pc" />
-            <Text onPress={() => setDevice("pc")}>PC</Text>
-          </RadioWrapper>
-          <RadioWrapper>
-            <RadioButton value="laptop" />
-            <Text onPress={() => setDevice("laptop")}>Laptop</Text>
-          </RadioWrapper>
-        </RadioButton.Group>
+          <Title style={{ marginLeft: 8, color: "white" }}>
+            O que você está precisando?
+          </Title>
+        </View>
+        <Spacer height={16} />
+        <CustomOption
+          title="PC"
+          isActive={defaultOrDeviceValue === "pc"}
+          onTouch={() => setDevice("pc")}
+        />
+        <Spacer height={16} />
+        <Spacer height={16} />
+        <CustomOption
+          title="Notebook"
+          onTouch={() => setDevice("laptop")}
+          isActive={defaultOrDeviceValue === "laptop"}
+        />
         <Spacer height={16} />
         <Button
           mode="contained"
@@ -52,5 +99,9 @@ function DeviceScreen({ navigation: { navigate } }: DeviceScreenProps) {
     </View>
   );
 }
+
+const styles = StyleSheet.create({
+  container: { flex: 1, paddingRight: 16, paddingLeft: 16, paddingTop: 16 },
+});
 
 export { DeviceScreen };
