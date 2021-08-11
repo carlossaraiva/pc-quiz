@@ -1,6 +1,6 @@
 import React from "react";
 import { NavigationContainer } from "@react-navigation/native";
-import { createStackNavigator, Header } from "@react-navigation/stack";
+import { createStackNavigator } from "@react-navigation/stack";
 import { DefaultTheme, Provider as PaperProvider } from "react-native-paper";
 import { QueryClientProvider } from "react-query";
 import { queryClient } from "@store";
@@ -11,9 +11,7 @@ import {
   LoadingScreen,
   ResultScreen,
 } from "@screens";
-import { View } from "react-native";
-import { Logo, LogoHeader, LogoSmall } from "@component";
-import StickyParallaxHeader from "react-native-sticky-parallax-header";
+import { LogoHeader } from "@component";
 
 const Stack = createStackNavigator();
 

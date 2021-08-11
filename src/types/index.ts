@@ -1,3 +1,5 @@
+import { SurveyData } from "../domain/SurveyData";
+
 export type SurveyState = {
   device: string | null;
   usage: string | null;
@@ -13,7 +15,7 @@ export type Result = {
 
 export type StackParamList = {
   Presentation: undefined;
-  DeviceScreen: undefined;
+  DeviceScreen: { survey: SurveyData };
   UsageScreen: undefined;
   LoadingScreen: undefined;
   ResultScreen: undefined;

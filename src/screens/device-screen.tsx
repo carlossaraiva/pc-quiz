@@ -2,7 +2,7 @@ import { Spacer, RadioWrapper, LogoSmall } from "@component";
 import { StackScreenProps } from "@react-navigation/stack";
 import { surveyStore } from "@store";
 import { StackParamList } from "@types";
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import {
   Button,
@@ -14,10 +14,21 @@ import {
 } from "react-native-paper";
 import shallow from "zustand/shallow";
 import { AntDesign } from "@expo/vector-icons";
+import { SurveyData } from "../domain/SurveyData";
+import { surveyData } from "@data";
+import { Answer } from "../domain/Answer";
 
 type DeviceScreenProps = StackScreenProps<StackParamList, "DeviceScreen">;
-
-function CustomOption({ title, description, value, isActive, onTouch }) {
+function CustomOption({
+  title,
+  description = `Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
+  tempore perferendis saepe autem distinctio error, nesciunt nemo! Quia,
+  omnis voluptas quae ipsam, nobis sapiente earum ex, repellat quaerat
+  quidem illo!`,
+  value,
+  isActive,
+  onTouch,
+}) {
   const { colors, roundness } = useTheme();
   const currentActiveColor = isActive ? colors.primary : colors.disabled;
   const currentTextColor = isActive ? colors.text : colors.disabled;
@@ -39,18 +50,18 @@ function CustomOption({ title, description, value, isActive, onTouch }) {
       </View>
       <View style={{ flex: 1 }}>
         <Title>{title}</Title>
-        <Paragraph style={{ color: currentTextColor }}>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit. Doloribus
-          tempore perferendis saepe autem distinctio error, nesciunt nemo! Quia,
-          omnis voluptas quae ipsam, nobis sapiente earum ex, repellat quaerat
-          quidem illo!
-        </Paragraph>
+        <Paragraph style={{ color: currentTextColor }}>{description}</Paragraph>
       </View>
     </View>
   );
 }
 
-function DeviceScreen({ navigation: { navigate } }: DeviceScreenProps) {
+function DeviceScreen({
+  navigation: { navigate, push },
+  route: {
+    params: { survey },
+  },
+}: DeviceScreenProps) {
   const { device, setDevice } = surveyStore(
     ({ device, setSurvey }) => ({
       device,
@@ -59,9 +70,10 @@ function DeviceScreen({ navigation: { navigate } }: DeviceScreenProps) {
     shallow
   );
   const { colors, roundness } = useTheme();
+  const [answer, setAnswer] = useState<Answer>();
 
   const defaultOrDeviceValue = device ?? "";
-  const deviceIsEmpty = device === "";
+  const deviceIsEmpty = !answer;
 
   return (
     <View style={styles.container}>
@@ -71,26 +83,31 @@ function DeviceScreen({ navigation: { navigate } }: DeviceScreenProps) {
           style={{ borderRadius: roundness, backgroundColor: colors.primary }}
         >
           <Title style={{ marginLeft: 8, color: "white" }}>
-            O que você está precisando?
+            {survey.question}
           </Title>
         </View>
         <Spacer height={16} />
-        <CustomOption
-          title="PC"
-          isActive={defaultOrDeviceValue === "pc"}
-          onTouch={() => setDevice("pc")}
-        />
-        <Spacer height={16} />
-        <Spacer height={16} />
-        <CustomOption
-          title="Notebook"
-          onTouch={() => setDevice("laptop")}
-          isActive={defaultOrDeviceValue === "laptop"}
-        />
-        <Spacer height={16} />
+        {survey.answers.map((answerData) => (
+          <>
+            <CustomOption
+              key={answerData.label}
+              title={answerData.label}
+              description={answerData.description}
+              isActive={answerData.value === answer?.value}
+              onTouch={() => setAnswer((prev) => ({ ...prev, ...answerData }))}
+            />
+            <Spacer height={16} />
+          </>
+        ))}
         <Button
           mode="contained"
-          onPress={() => navigate("UsageScreen")}
+          onPress={() => {
+            if (!answer?.nextQuestion) return;
+
+            push("DeviceScreen", {
+              survey: surveyData[answer?.nextQuestion],
+            });
+          }}
           disabled={deviceIsEmpty}
         >
           Continuar

@@ -50,3 +50,5 @@ export const RESPONSES: Record<string, Record<string, Result>> = {
     },
   },
 };
+
+export { surveyData } from "./survey-data";

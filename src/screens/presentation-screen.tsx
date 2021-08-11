@@ -16,11 +16,11 @@ import {
   AdMobRewarded,
   PublisherBanner,
 } from "expo-ads-admob";
-import { AD_REWARDED, AD_BANNER, AD_PUBLISHER } from "@env";
 import { StackParamList } from "@types";
 import { Logo, LogoSmall, Spacer } from "@component";
 import { surveyStore } from "@store";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
+import { surveyData } from "@data";
 
 type PresentationProps = StackScreenProps<StackParamList, "Presentation">;
 
@@ -30,7 +30,7 @@ function PresentationScreen({ navigation }: PresentationProps) {
 
   const start = () => {
     clearStore();
-    navigation.navigate("DeviceScreen");
+    navigation.navigate("DeviceScreen", { survey: surveyData["DEVICE"] });
   };
 
   useEffect(() => {
