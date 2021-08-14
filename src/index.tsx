@@ -12,6 +12,7 @@ import {
 } from "@screens";
 import { LogoHeader } from "@component";
 import { LogBox } from "react-native";
+import { RootSiblingParent } from "react-native-root-siblings";
 
 const Stack = createStackNavigator();
 
@@ -34,44 +35,48 @@ const theme = {
 function App() {
   return (
     <QueryClientProvider client={queryClient}>
-      <PaperProvider theme={theme}>
-        <NavigationContainer>
-          <Stack.Navigator
-            screenOptions={{
-              headerTitleAlign: "center",
-              headerTintColor: theme.colors.accent,
-              headerTitle: () => <LogoHeader color={theme.colors.primary} />,
-            }}
-          >
-            <Stack.Screen
-              name="Presentation"
-              component={PresentationScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="DeviceScreen"
-              component={DeviceScreen}
-              options={{
-                headerStyle: {},
-              }}
-            />
-            <Stack.Screen
-              name="LoadingScreen"
-              component={LoadingScreen}
-              options={{ headerShown: false }}
-            />
-            <Stack.Screen
-              name="ResultScreen"
-              component={ResultScreen}
-              options={{
-                headerTintColor: theme.colors.accent,
+      <RootSiblingParent>
+        <PaperProvider theme={theme}>
+          <NavigationContainer>
+            <Stack.Navigator
+              screenOptions={{
                 headerTitleAlign: "center",
+                headerTintColor: theme.colors.primary,
                 headerTitle: () => <LogoHeader color={theme.colors.primary} />,
               }}
-            />
-          </Stack.Navigator>
-        </NavigationContainer>
-      </PaperProvider>
+            >
+              <Stack.Screen
+                name="Presentation"
+                component={PresentationScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="DeviceScreen"
+                component={DeviceScreen}
+                options={{
+                  headerStyle: {},
+                }}
+              />
+              <Stack.Screen
+                name="LoadingScreen"
+                component={LoadingScreen}
+                options={{ headerShown: false }}
+              />
+              <Stack.Screen
+                name="ResultScreen"
+                component={ResultScreen}
+                options={{
+                  headerTintColor: theme.colors.primary,
+                  headerTitleAlign: "center",
+                  headerTitle: () => (
+                    <LogoHeader color={theme.colors.primary} />
+                  ),
+                }}
+              />
+            </Stack.Navigator>
+          </NavigationContainer>
+        </PaperProvider>
+      </RootSiblingParent>
     </QueryClientProvider>
   );
 }

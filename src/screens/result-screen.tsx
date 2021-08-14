@@ -2,21 +2,27 @@ import { Spacer } from "@component";
 import { StackScreenProps } from "@react-navigation/stack";
 import { StackParamList } from "@types";
 import React, { useState } from "react";
-import { View, FlatList, StyleSheet } from "react-native";
+import { View, FlatList, StyleSheet, Linking, Share } from "react-native";
 import {
   Button,
   Card,
-  Paragraph,
   Title,
   FAB,
   Portal,
   Provider,
   useTheme,
 } from "react-native-paper";
+import { AntDesign } from "@expo/vector-icons";
+import { getNextQuestion } from "../data/survey-data";
+import { setString } from "expo-clipboard";
+import Toast from "react-native-root-toast";
 
 type ResultScreenProps = StackScreenProps<StackParamList, "ResultScreen">;
 
-function ResultScreen({ navigation, route }: ResultScreenProps) {
+function ResultScreen({
+  navigation: { replace, reset },
+  route,
+}: ResultScreenProps) {
   const result = route.params.result;
   const [state, setState] = useState({ open: false });
   const { colors, roundness } = useTheme();
@@ -30,12 +36,43 @@ function ResultScreen({ navigation, route }: ResultScreenProps) {
         <Card>
           <Card.Content>
             <Title>{item.title}</Title>
-            <Paragraph>{item.link}</Paragraph>
           </Card.Content>
           <Card.Cover source={{ uri: item.image }} />
-          <Card.Actions>
-            <Button>Cancel</Button>
-            <Button>Ok</Button>
+          <Card.Actions style={{ justifyContent: "flex-end" }}>
+            <Button
+              onPress={() => {
+                setString(item.link);
+
+                Toast.show("Copiado pesquisa", {
+                  duration: Toast.durations.LONG,
+                });
+              }}
+            >
+              <AntDesign name="copy1" size={18} color={colors.accent} />
+            </Button>
+            <View style={{ width: 8 }} />
+            <Button
+              onPress={async () => {
+                try {
+                  const result = await Share.share({
+                    message: item.link,
+                  });
+                  if (result.action === Share.sharedAction) {
+                    if (result.activityType) {
+                      // shared with activity type of result.activityType
+                    } else {
+                      // shared
+                    }
+                  } else if (result.action === Share.dismissedAction) {
+                    // dismissed
+                  }
+                } catch (error) {
+                  alert(error.message);
+                }
+              }}
+            >
+              <AntDesign name="sharealt" size={18} color={colors.accent} />
+            </Button>
           </Card.Actions>
         </Card>
         <Spacer height={16} />
@@ -59,24 +96,37 @@ function ResultScreen({ navigation, route }: ResultScreenProps) {
         <Portal>
           <FAB.Group
             open={open}
-            icon={open ? "calendar-today" : "plus"}
+            icon={"help"}
             fabStyle={{ backgroundColor: colors.accentLight }}
             actions={[
-              { icon: "plus", onPress: () => console.log("Pressed add") },
               {
-                icon: "star",
-                label: "Star",
-                onPress: () => console.log("Pressed star"),
+                icon: "home",
+                label: "Início",
+                onPress: () => replace("Presentation"),
               },
               {
-                icon: "email",
-                label: "Email",
-                onPress: () => console.log("Pressed email"),
+                icon: "restart",
+                label: "Novo questionário",
+                onPress: () =>
+                  reset({
+                    index: 0,
+                    routes: [
+                      { name: "Presentation" },
+                      {
+                        name: "DeviceScreen",
+                        params: {
+                          survey: getNextQuestion("DEVICE"),
+                        },
+                      },
+                    ],
+                  }),
               },
               {
-                icon: "bell",
-                label: "Remind",
-                onPress: () => console.log("Pressed notifications"),
+                icon: "whatsapp",
+                label: "Falar com especialista",
+                onPress: () => {
+                  Linking.openURL("https://wa.me/message/LLKG3HQJW7WUP1");
+                },
               },
             ]}
             onStateChange={onStateChange}

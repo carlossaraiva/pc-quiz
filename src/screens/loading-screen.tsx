@@ -59,8 +59,6 @@ function LoadingScreen({
         )
         .then(AdMobInterstitial.showAdAsync);
     }
-
-    //
   }, [isSuccess]);
 
   return (

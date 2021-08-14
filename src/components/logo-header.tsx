@@ -10,7 +10,7 @@ function LogoHeader({ color = "white" }) {
   return (
     <View style={[styles.logo, { alignSelf: "flex-end" }]}>
       <AntDesign name="poweroff" size={16} color={color} />
-      <View style={{ width: 4 }} />
+      <View style={{ width: 12 }} />
       <Text style={{ color }}>BUSCAPC</Text>
     </View>
   );
