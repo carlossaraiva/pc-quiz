@@ -1,26 +1,13 @@
 import { StackScreenProps } from "@react-navigation/stack";
-import React, { useContext, useEffect } from "react";
-import { View, StyleSheet, Animated } from "react-native";
-import {
-  Title,
-  Text,
-  Button,
-  useTheme,
-  Avatar,
-  Card,
-  Paragraph,
-} from "react-native-paper";
-import {
-  AdMobBanner,
-  AdMobInterstitial,
-  AdMobRewarded,
-  PublisherBanner,
-} from "expo-ads-admob";
+import React from "react";
+import { View, StyleSheet } from "react-native";
+import { Button, useTheme, Card, Paragraph } from "react-native-paper";
+import { AdMobBanner, PublisherBanner } from "expo-ads-admob";
 import { StackParamList } from "@types";
 import { Logo, LogoSmall, Spacer } from "@component";
 import { surveyStore } from "@store";
 import ParallaxScrollView from "react-native-parallax-scroll-view";
-import { surveyData } from "@data";
+import { getNextQuestion } from "../data/survey-data";
 
 type PresentationProps = StackScreenProps<StackParamList, "Presentation">;
 
@@ -30,19 +17,8 @@ function PresentationScreen({ navigation }: PresentationProps) {
 
   const start = () => {
     clearStore();
-    navigation.navigate("DeviceScreen", { survey: surveyData["DEVICE"] });
+    navigation.navigate("DeviceScreen", { survey: getNextQuestion("DEVICE") });
   };
-
-  useEffect(() => {
-    // AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/1033173712")
-    //   .then(() =>
-    //     AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true })
-    //   )
-    //   .then(AdMobInterstitial.showAdAsync);
-    // AdMobRewarded.setAdUnitID("ca-app-pub-3940256099942544/5224354917")
-    //   .then(AdMobRewarded.requestAdAsync)
-    //   .then(AdMobRewarded.showAdAsync);
-  }, []);
 
   return (
     <>
@@ -50,7 +26,7 @@ function PresentationScreen({ navigation }: PresentationProps) {
         backgroundColor={colors.primary}
         stickyHeaderHeight={60}
         renderStickyHeader={() => <LogoSmall />}
-        parallaxHeaderHeight={300}
+        parallaxHeaderHeight={240}
         renderForeground={() => (
           <View
             style={{
@@ -61,6 +37,7 @@ function PresentationScreen({ navigation }: PresentationProps) {
               shadowOpacity: 0.8,
               shadowRadius: 2,
               elevation: 5,
+              justifyContent: "center",
             }}
           >
             <Logo />
@@ -78,6 +55,7 @@ function PresentationScreen({ navigation }: PresentationProps) {
           >
             <Spacer height={16} />
             <Card onPress={start}>
+              <Card.Title title="Bem vindo!" />
               <Card.Content>
                 <Paragraph>
                   Seja bem vindo ao BUSCAPC! Aqui ajudaremos você a escolher o
@@ -96,12 +74,13 @@ function PresentationScreen({ navigation }: PresentationProps) {
             <AdMobBanner
               style={{ alignSelf: "center" }}
               bannerSize="banner"
-              adUnitID="ca-app-pub-3940256099942544/6300978111"
+              adUnitID="ca-app-pub-0916972933686266/9245141185"
               servePersonalizedAds
               onDidFailToReceiveAdWithError={console.log}
             />
             <Spacer height={16} />
             <Card onPress={start}>
+              <Card.Title title="Dicas" />
               <Card.Content>
                 <Paragraph>
                   Visite nossa seção de dicas para conhecer melhor como funciona
@@ -118,7 +97,7 @@ function PresentationScreen({ navigation }: PresentationProps) {
             <PublisherBanner
               style={{ alignSelf: "center" }}
               bannerSize="largeBanner"
-              adUnitID="ca-app-pub-3940256099942544/6300978111"
+              adUnitID="ca-app-pub-0916972933686266/9245141185"
               onDidFailToReceiveAdWithError={console.log}
               onAdMobDispatchAppEvent={console.log}
             />

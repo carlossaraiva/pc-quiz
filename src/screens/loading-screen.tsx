@@ -10,43 +10,57 @@ import {
   ActivityIndicator,
 } from "react-native-paper";
 import { useQuery } from "react-query";
-import shallow from "zustand/shallow";
 import { API_BASE_URL, API_ENDPOINT_BASE } from "@env";
 import { StackParamList } from "@types";
 import { Spacer } from "@component";
-import { surveyStore } from "@store";
 import { styles } from "@styles";
+import { AdMobInterstitial } from "expo-ads-admob";
 
-type LoadingScreenProps = StackScreenProps<StackParamList, "ResultScreen">;
+type LoadingScreenProps = StackScreenProps<StackParamList, "LoadingScreen">;
 
-function LoadingScreen({ navigation }: LoadingScreenProps) {
+function LoadingScreen({
+  navigation,
+  route: {
+    params: { query },
+  },
+}: LoadingScreenProps) {
   const [visible, setVisible] = React.useState(false);
-  const { result } = surveyStore(
-    ({ getResult }) => ({
-      result: getResult(),
-    }),
-    shallow
-  );
 
   const showDialog = () => setVisible(true);
 
   const hideDialog = () => setVisible(false);
 
   const { data, isSuccess, isError, error } = useQuery(
-    ["results", result?.query],
+    ["results", query],
     () => {
-      if (!result) throw new Error("Query parameter is null or empty");
+      if (!query) throw new Error("Query parameter is null or empty");
 
       return fetch(
         `${API_BASE_URL}/${API_ENDPOINT_BASE}?${new URLSearchParams({
-          q: result.query,
+          q: query.join("+"),
         })}`
       ).then((res) => res.json());
     }
   );
 
   useEffect(() => {
-    if (isSuccess) navigation.replace("ResultScreen", { result: data });
+    if (isSuccess) {
+      AdMobInterstitial.addEventListener("interstitialDidClose", () => {
+        navigation.replace("ResultScreen", { result: data });
+      });
+
+      AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () => {
+        navigation.replace("ResultScreen", { result: data });
+      });
+
+      AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/8691691433")
+        .then(() =>
+          AdMobInterstitial.requestAdAsync({ servePersonalizedAds: true })
+        )
+        .then(AdMobInterstitial.showAdAsync);
+    }
+
+    //
   }, [isSuccess]);
 
   return (

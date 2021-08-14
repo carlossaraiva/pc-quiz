@@ -7,21 +7,27 @@ import { queryClient } from "@store";
 import {
   PresentationScreen,
   DeviceScreen,
-  UsageScreen,
   LoadingScreen,
   ResultScreen,
 } from "@screens";
 import { LogoHeader } from "@component";
+import { LogBox } from "react-native";
 
 const Stack = createStackNavigator();
+
+LogBox.ignoreLogs(["Setting a timer for a long period of time"]);
 
 const theme = {
   ...DefaultTheme,
   roundness: 10,
   colors: {
     ...DefaultTheme.colors,
-    primary: "#F90040",
-    accent: "#605770",
+    primary: "#be001a",
+    primaryLight: "#f84c43",
+    primaryDark: "#860000",
+    accent: "#32373b",
+    accentLight: "#5b6165",
+    accentDark: "#0b1115",
   },
 };
 
@@ -32,12 +38,9 @@ function App() {
         <NavigationContainer>
           <Stack.Navigator
             screenOptions={{
-              headerTintColor: "#ffffff",
               headerTitleAlign: "center",
-              headerStyle: {
-                backgroundColor: theme.colors.primary,
-              },
-              headerTitle: () => <LogoHeader />,
+              headerTintColor: theme.colors.accent,
+              headerTitle: () => <LogoHeader color={theme.colors.primary} />,
             }}
           >
             <Stack.Screen
@@ -45,10 +48,27 @@ function App() {
               component={PresentationScreen}
               options={{ headerShown: false }}
             />
-            <Stack.Screen name="DeviceScreen" component={DeviceScreen} />
-            <Stack.Screen name="UsageScreen" component={UsageScreen} />
-            <Stack.Screen name="LoadingScreen" component={LoadingScreen} />
-            <Stack.Screen name="ResultScreen" component={ResultScreen} />
+            <Stack.Screen
+              name="DeviceScreen"
+              component={DeviceScreen}
+              options={{
+                headerStyle: {},
+              }}
+            />
+            <Stack.Screen
+              name="LoadingScreen"
+              component={LoadingScreen}
+              options={{ headerShown: false }}
+            />
+            <Stack.Screen
+              name="ResultScreen"
+              component={ResultScreen}
+              options={{
+                headerTintColor: theme.colors.accent,
+                headerTitleAlign: "center",
+                headerTitle: () => <LogoHeader color={theme.colors.primary} />,
+              }}
+            />
           </Stack.Navigator>
         </NavigationContainer>
       </PaperProvider>

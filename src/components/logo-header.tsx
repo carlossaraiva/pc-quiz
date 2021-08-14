@@ -4,19 +4,14 @@ import { View } from "react-native";
 import { useTheme, Text } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 
-function LogoHeader() {
+function LogoHeader({ color = "white" }) {
   const { colors, roundness } = useTheme();
 
   return (
-    <View
-      style={[
-        styles.logo,
-        { backgroundColor: colors.primary, alignSelf: "flex-end" },
-      ]}
-    >
-      <AntDesign name="poweroff" size={16} color="white" />
+    <View style={[styles.logo, { alignSelf: "flex-end" }]}>
+      <AntDesign name="poweroff" size={16} color={color} />
       <View style={{ width: 4 }} />
-      <Text style={{ color: "white" }}>BUSCAPC</Text>
+      <Text style={{ color }}>BUSCAPC</Text>
     </View>
   );
 }
