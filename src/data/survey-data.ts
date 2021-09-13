@@ -60,13 +60,22 @@ const usageProfessionalDesktop = () => ({
       label: "Edição de Vídeo e Fotografia",
       value: "video_photography",
       nextQuestion: "PERFORMANCE_DESKTOP",
-      keywords: ["DESKTOP", "32GB", "i9", "Xeon", "nVidia Quadro"],
+      hardwareSpecification: {
+        type: ["desktop"],
+        memory: ["32gb"],
+        processor: ["xeon", "i9"],
+        video: ["nvidia quadro"],
+      },
     },
     {
       label: "Ferramentas de escritório",
       value: "office_tools",
       nextQuestion: "PERFORMANCE_DESKTOP",
-      keywords: ["DESKTOP", "16GB", "i5", "i7"],
+      hardwareSpecification: {
+        type: ["desktop"],
+        memory: ["16GB"],
+        processor: ["i7", "i5"],
+      },
     },
   ],
 });
@@ -81,13 +90,22 @@ const usageProfessionalNotebook = () => ({
       label: "Edição de Vídeo e Fotografia",
       value: "video_photography",
       nextQuestion: "PERFORMANCE_NOTEBOOK",
-      keywords: ["NOTEBOOK", "32GB", "i7", "i9", "nVidia Q-MAX"],
+      hardwareSpecification: {
+        type: ["notebook"],
+        memory: ["32gb"],
+        processor: ["i7", "i9"],
+        video: ["nvidia q-max"],
+      },
     },
     {
       label: "Ferramentas de escritório",
       value: "office_tools",
       nextQuestion: "PERFORMANCE_NOTEBOOK",
-      keywords: ["DESKTOP", "16GB", "i5", "i7"],
+      hardwareSpecification: {
+        type: ["desktop"],
+        memory: ["16GB"],
+        processor: ["i5", "i7"],
+      },
     },
   ],
 });
@@ -102,34 +120,42 @@ const usagePersonalDesktop = () => ({
       label: "Edição de Vídeo e Fotografia",
       value: "video_photography",
       nextQuestion: "PERFORMANCE_DESKTOP",
-      keywords: ["DESKTOP", "16GB", "i5", "i7"],
+      hardwareSpecification: {
+        type: ["desktop"],
+        memory: ["16gb"],
+        processor: ["i5", "i7"],
+      },
     },
     {
       label: "Ferramentas de escritório",
       value: "office_tools",
       nextQuestion: "PERFORMANCE_DESKTOP",
-      keywords: ["DESKTOP", "8GB", "i5", "i3"],
+      hardwareSpecification: {
+        type: ["desktop"],
+        memory: ["8gb"],
+        processor: ["i3", "i5"],
+      },
     },
     {
       label: "Navegação de Internet e Redes Sociais",
       value: "internet",
       nextQuestion: "PERFORMANCE_DESKTOP",
-      keywords: ["DESKTOP", "8GB", "i3", "pentium"],
+      hardwareSpecification: {
+        type: ["desktop"],
+        memory: ["8GB"],
+        processor: ["pentium", "i3"],
+      },
     },
     {
       label: "Games",
       value: "games",
       nextQuestion: "PERFORMANCE_DESKTOP",
-      keywords: [
-        "DESKTOP",
-        "16GB",
-        "i7",
-        "i5",
-        "nVidia RTX",
-        "AMD Radeon",
-        "AMD Ryzen 7",
-        "AMD Ryzen 5 ",
-      ],
+      hardwareSpecification: {
+        type: ["desktop"],
+        memory: ["16gb"],
+        processor: ["i5", "i7"],
+        video: ["nvidia rtx"],
+      },
     },
   ],
 });
@@ -144,25 +170,42 @@ const usagePersonalNotebook = () => ({
       label: "Edição de Vídeo e Fotografia",
       value: "video_photography",
       nextQuestion: "PERFORMANCE_NOTEBOOK",
-      keywords: ["NOTEBOOK", "16GB", "i5", "i7"],
+      hardwareSpecification: {
+        type: ["notebook"],
+        memory: ["16gb"],
+        processor: ["i5", "i7"],
+      },
     },
     {
       label: "Ferramentas de escritório",
       value: "office_tools",
       nextQuestion: "PERFORMANCE_NOTEBOOK",
-      keywords: ["NOTEBOOK", "8GB", "i5", "i3"],
+      hardwareSpecification: {
+        type: ["notebook"],
+        memory: ["8gb"],
+        processor: ["i3", "i5"],
+      },
     },
     {
       label: "Navegação de Internet e Redes Sociais",
       value: "internet",
       nextQuestion: "PERFORMANCE_NOTEBOOK",
-      keywords: ["NOTEBOOK", "8GB", "i3", "pentium"],
+      hardwareSpecification: {
+        type: ["notebook"],
+        memory: ["8gb"],
+        processor: ["i3", "pentium"],
+      },
     },
     {
       label: "Games",
       value: "games",
       nextQuestion: "PERFORMANCE_DESKTOP",
-      keywords: ["NOTEBOOK", "16GB", "i7", "i5", "nVidia Q-MAX"],
+      hardwareSpecification: {
+        type: ["notebook"],
+        memory: ["16gb"],
+        processor: ["i5", "i7"],
+        video: ["nvidia q-max"],
+      },
     },
   ],
 });
@@ -174,7 +217,6 @@ const performanceDesktop = () => ({
     {
       label: "Alta capacidade de armazenamento / menos responsivo",
       value: "storage",
-      keywords: ["NOTEBOOK", "16GB", "i5", "i7"],
     },
     {
       label: "Menor capacidade de armazenamento / mais responsivo",
@@ -218,14 +260,23 @@ const screenSize = () => ({
     {
       label: "Até 13 polegadas",
       value: "13pol",
+      hardwareSpecification: {
+        monitor: ['21"'],
+      },
     },
     {
       label: "Entre 14 e 15 polegadas",
       value: "14_15_pol",
+      keywords: [["14"], ["15"]],
+      hardwareSpecification: {
+        monitor: ['14"', '15"'],
+      },
     },
     {
       label: "17 polegadas ou maior",
-      value: "17pol",
+      hardwareSpecification: {
+        monitor: ['17"'],
+      },
     },
   ],
 });

@@ -15,8 +15,11 @@ export type Result = {
 
 export type StackParamList = {
   Presentation: undefined;
-  DeviceScreen: { survey: SurveyData; query: string[] };
+  DeviceScreen: {
+    survey: SurveyData;
+    hardwareSpecification: {};
+  };
   UsageScreen: undefined;
-  LoadingScreen: { query: string[] };
+  LoadingScreen: { hardwareSpecification: {} };
   ResultScreen: undefined;
 };

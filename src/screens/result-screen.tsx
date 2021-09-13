@@ -11,6 +11,7 @@ import {
   Portal,
   Provider,
   useTheme,
+  Paragraph,
 } from "react-native-paper";
 import { AntDesign } from "@expo/vector-icons";
 import { getNextQuestion } from "../data/survey-data";
@@ -34,10 +35,20 @@ function ResultScreen({
     return (
       <>
         <Card>
-          <Card.Content>
-            <Title>{item.title}</Title>
-          </Card.Content>
-          <Card.Cover source={{ uri: item.image }} />
+          <View style={{ flexDirection: "row" }}>
+            <Card.Cover
+              source={{ uri: item.image }}
+              resizeMode="cover"
+              style={{ width: 100 }}
+            />
+            <Card.Content>
+              <Paragraph style={{ flex: 1, fontSize: 12, flexWrap: "wrap" }}>
+                {item.title}
+              </Paragraph>
+              <Paragraph>Preço: {item.price_raw}</Paragraph>
+              <Paragraph>Vendedor: {item.merchant}</Paragraph>
+            </Card.Content>
+          </View>
           <Card.Actions style={{ justifyContent: "flex-end" }}>
             <Button
               onPress={() => {
@@ -90,7 +101,7 @@ function ResultScreen({
         data={result}
         renderItem={renderItem}
         contentContainerStyle={{ paddingRight: 16, paddingLeft: 16 }}
-        keyExtractor={(item) => item.title}
+        keyExtractor={(item) => `${item.offer_id}-${item.position}`}
       />
       <Provider>
         <Portal>

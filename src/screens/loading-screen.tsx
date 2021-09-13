@@ -21,7 +21,7 @@ type LoadingScreenProps = StackScreenProps<StackParamList, "LoadingScreen">;
 function LoadingScreen({
   navigation,
   route: {
-    params: { query },
+    params: { hardwareSpecification },
   },
 }: LoadingScreenProps) {
   const [visible, setVisible] = React.useState(false);
@@ -31,17 +31,20 @@ function LoadingScreen({
   const hideDialog = () => setVisible(false);
 
   const { data, isSuccess, isError, error } = useQuery(
-    ["results", query],
+    ["results", hardwareSpecification],
     () => {
-      if (!query) throw new Error("Query parameter is null or empty");
+      if (!hardwareSpecification)
+        throw new Error("Query parameter is null or empty");
 
       return fetch(
-        `${API_BASE_URL}/${API_ENDPOINT_BASE}?${new URLSearchParams({
-          q: query.join("+"),
-        })}`
+        `${API_BASE_URL}/${API_ENDPOINT_BASE}?${new URLSearchParams(
+          hardwareSpecification
+        )}`
       ).then((res) => res.json());
     }
   );
+
+  console.log(data);
 
   useEffect(() => {
     if (isSuccess) {

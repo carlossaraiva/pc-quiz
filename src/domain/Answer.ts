@@ -4,4 +4,5 @@ export interface Answer {
   nextQuestion?: string;
   keywords: string[];
   description: string;
+  hardwareSpecification: {};
 }

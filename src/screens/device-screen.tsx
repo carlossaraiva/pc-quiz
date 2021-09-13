@@ -63,7 +63,7 @@ function CustomOption({
 function DeviceScreen({
   navigation: { navigate, push },
   route: {
-    params: { survey, query = [] },
+    params: { survey, hardwareSpecification },
   },
 }: DeviceScreenProps) {
   const { colors, roundness } = useTheme();
@@ -155,11 +155,14 @@ function DeviceScreen({
             }}
             onPress={() => {
               if (!answer?.nextQuestion)
-                return navigate("LoadingScreen", { query });
+                return navigate("LoadingScreen", { hardwareSpecification });
 
               push("DeviceScreen", {
                 survey: getNextQuestion(answer?.nextQuestion),
-                query: [...query, ...(answer.keywords ?? [])],
+                hardwareSpecification: {
+                  ...hardwareSpecification,
+                  ...answer.hardwareSpecification,
+                },
               });
             }}
           >
