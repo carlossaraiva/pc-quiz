@@ -37,23 +37,24 @@ function LoadingScreen({
         throw new Error("Query parameter is null or empty");
 
       return fetch(
-        `${API_BASE_URL}/${API_ENDPOINT_BASE}?${new URLSearchParams(
+        `${"http://10.0.2.2:3000"}/${"test"}?${new URLSearchParams(
           hardwareSpecification
         )}`
       ).then((res) => res.json());
     }
   );
 
-  console.log(data);
-
   useEffect(() => {
     if (isSuccess) {
       AdMobInterstitial.addEventListener("interstitialDidClose", () => {
-        navigation.replace("ResultScreen", { result: data });
+        navigation.replace("ResultScreen", { data });
       });
 
       AdMobInterstitial.addEventListener("interstitialDidFailToLoad", () => {
-        navigation.replace("ResultScreen", { result: data });
+        navigation.replace("ResultScreen", {
+          data,
+          hardwareSpecification,
+        });
       });
 
       AdMobInterstitial.setAdUnitID("ca-app-pub-3940256099942544/8691691433")
@@ -81,6 +82,7 @@ function LoadingScreen({
       <Spacer height={32} />
       <Text>Processando seu perfil.</Text>
       <Text>Aguarde um momento...</Text>
+      {isError && <Text>{error.message}</Text>}
     </View>
   );
 }

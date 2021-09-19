@@ -2,11 +2,12 @@ import React from "react";
 import { View } from "react-native";
 
 type SpacerProps = {
-  height: string | number | undefined;
+  height?: string | number;
+  width?: string | number;
 };
 
-function Spacer({ height }: SpacerProps) {
-  return <View style={{ height }} />;
+function Spacer({ height, width }: SpacerProps) {
+  return <View style={{ height, width }} />;
 }
 
 export { Spacer };

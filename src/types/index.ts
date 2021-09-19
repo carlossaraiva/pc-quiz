@@ -21,5 +21,5 @@ export type StackParamList = {
   };
   UsageScreen: undefined;
   LoadingScreen: { hardwareSpecification: {} };
-  ResultScreen: undefined;
+  ResultScreen: { hardwareSpecification: {} };
 };
