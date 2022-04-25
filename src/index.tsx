@@ -72,17 +72,15 @@ function App() {
                     <LogoHeader color={theme.colors.primary} />
                   ),
                   headerRight: () => (
-                    <>
-                      <Button
-                        onTouchEndCapture={() => {
-                          navigation.push("DebugModal", {
-                            searchStrings: route.params.data.searchStrings,
-                          });
-                        }}
-                      >
-                        Debug
-                      </Button>
-                    </>
+                    <Button
+                      onTouchEndCapture={() => {
+                        navigation.push("DebugModal", {
+                          searchStrings: route.params.data.searchStrings,
+                        });
+                      }}
+                    >
+                      Debug
+                    </Button>
                   ),
                 })}
               />
